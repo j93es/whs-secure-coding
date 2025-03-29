@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block title %}송금하기{% endblock %} {% block
+content %}
+<h1>{{ recipient.username }}님에게 송금하기</h1>
+<form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+  <label for="amount">송금 금액 (원):</label>
+  <input type="number" name="amount" id="amount" required min="1" />
+  <button type="submit">송금</button>
+</form>
+{% endblock %}

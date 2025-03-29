@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}My Market{% endblock %}</title>
+    <!-- Socket.IO 클라이언트 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='base-style.css') }}"
+    />
+  </head>
+  <body>
+    <nav>
+      {% if current_admin.is_admin %}
+      <a href="{{ url_for('admin.dashboard') }}">대시보드</a>
+      <a href="{{ url_for('admin.report') }}">신고 관리</a>
+      <a href="{{ url_for('admin.users') }}">사용자 관리</a>
+      <a href="{{ url_for('admin.products') }}">상품 관리</a>
+      <a href="{{ url_for('admin.chats') }}">채팅 관리</a>
+      <a href="{{ url_for('admin.logout') }}">로그아웃</a>
+      {% else %}
+      <a href="{{ url_for('admin.login') }}">로그인</a>
+      {% endif %}
+    </nav>
+    <div class="container">
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li class="flash">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %} {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>

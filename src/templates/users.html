@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %}전체 사용자 조회{% endblock %} {%
+block content %}
+<h1>전체 사용자 목록</h1>
+<table border="1" cellspacing="0" cellpadding="5">
+  <tr>
+    <th>고유번호</th>
+    <th>아이디</th>
+    <th>상태</th>
+    <th>소개</th>
+  </tr>
+  {% for user in users %}
+  <tr>
+    <td>
+      <a href="{{ url_for('user.user_detail', user_id=user.id) }}"
+        >{{ user.id }}</a
+      >
+    </td>
+    <td>
+      <a href="{{ url_for('user.user_detail', user_id=user.id) }}"
+        >{{ user.username }}</a
+      >
+    </td>
+    <td>{{ user.status }}</td>
+    <td>{{ user.bio or '-' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block title %}Wallet 계좌 내역{% endblock %} {%
+block content %}
+<h1>나의 Wallet</h1>
+<p><strong>잔액:</strong> {{ user.wallet }} 원</p>
+
+<h2>송금/입금 내역</h2>
+{% if transactions %}
+<table border="1" cellspacing="0" cellpadding="5">
+  <tr>
+    <th>날짜</th>
+    <th>구분</th>
+    <th>금액</th>
+    <th>상대방</th>
+  </tr>
+  {% for txn in transactions %}
+  <tr>
+    <td>{{ txn.timestamp }}</td>
+    {% if txn.transaction_type == 'deposit' %}
+    <td>입금</td>
+    <td>+{{ txn.amount }}</td>
+    <td>-</td>
+    {% elif txn.transaction_type == 'withdrawal' %}
+    <td>송금</td>
+    <td>-{{ txn.amount }}</td>
+    <td>-</td>
+    {% elif txn.transaction_type == 'transfer' %} {% if txn.sender_id == user.id
+    %}
+    <td>송금</td>
+    <td>-{{ txn.amount }}</td>
+    <td>
+      {% set recipient = service.get_user(txn.recipient_id) %} {{
+      recipient.username if recipient else txn.recipient_id }}
+    </td>
+    {% else %}
+    <td>입금</td>
+    <td>+{{ txn.amount }}</td>
+    <td>
+      {% set sender = service.get_user(txn.sender_id) %} {{ sender.username if
+      sender else txn.sender_id }}
+    </td>
+    {% endif %} {% else %}
+    <td>{{ txn.transaction_type }}</td>
+    <td>{{ txn.amount }}</td>
+    <td>-</td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>거래 내역이 없습니다.</p>
+{% endif %} {% endblock %}

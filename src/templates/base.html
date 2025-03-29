@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}My Market{% endblock %}</title>
+    <!-- Socket.IO 클라이언트 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='base-style.css') }}"
+    />
+  </head>
+  <body>
+    <nav>
+      {% if current_user.id %}
+      <a href="{{ url_for('user.dashboard') }}">대시보드</a>
+      <a href="{{ url_for('user.users') }}">사용자 목록</a>
+      <a href="{{ url_for('user.search_products_route') }}">상품 검색</a>
+      <a href="{{ url_for('user.profile') }}">프로필</a>
+      <a href="{{ url_for('user.wallet') }}">나의 지갑</a>
+      <a href="{{ url_for('user.report') }}">신고하기</a>
+      <a href="{{ url_for('user.logout') }}">로그아웃</a>
+      {% else %}
+      <a href="{{ url_for('user.login') }}">로그인</a>
+      <a href="{{ url_for('user.register') }}">회원가입</a>
+      {% endif %}
+    </nav>
+    <div class="container">
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li class="flash">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %} {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>

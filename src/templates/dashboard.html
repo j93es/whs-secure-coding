@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}대시보드{% endblock %} {% block
+content %}
+<h2>대시보드</h2>
+<h3>최근 등록된 상품</h3>
+<ul>
+  {% for product in products[:10] %}
+  <li>
+    <a href="{{ url_for('user.view_product', product_id=product.id) }}">
+      {{ product.title }}
+    </a>
+    - 가격: {{ product.price }}
+  </li>
+  {% endfor %}
+</ul>
+<p><a href="{{ url_for('user.new_product') }}">새 상품 등록</a></p>
+
+<h3>전역 채팅 내역</h3>
+<div id="chat" data-user-id="{{ current_user.id }}">
+  <ul id="messages">
+    {% for chat in global_chats %} {# sender의 username을 불러오기 위해, 만약
+    service를 템플릿 전역 변수로 등록했다면 사용 가능 #} {% set sender =
+    service.get_user(chat.sender_id) %}
+    <li>
+      {{ sender.username if sender else chat.sender_id }}: {{ chat.message }}
+      ({{ chat.timestamp }})
+    </li>
+    {% endfor %}
+  </ul>
+  <input id="chat_input" type="text" placeholder="메시지를 입력하세요" />
+  <button id="send-btn" onclick="sendMessage()">전송</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+{% endblock %}

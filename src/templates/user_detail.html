@@ -1,0 +1,50 @@
+{% extends "base.html" %} {% block title %}사용자 정보 상세 페이지{% endblock %}
+{% block content %}
+<h1>사용자 정보 상세 페이지</h1>
+<ul>
+  <li><strong>아이디:</strong> {{ user.username }}</li>
+  <li><strong>고유번호:</strong> {{ user.id }}</li>
+  <li><strong>상태:</strong> {{ user.status }}</li>
+  <li><strong>소개:</strong> {{ user.bio or "없음" }}</li>
+</ul>
+<br />
+
+{% if current_user and current_user.id != user.id %}
+<hr />
+<h2>{{ user.username }}님과의 1:1 채팅</h2>
+<div
+  id="chat"
+  data-current-user-id="{{ current_user.id }}"
+  data-recipient-user-id="{{ user.id }}"
+>
+  <ul id="private-messages">
+    {% for chat in private_chats %} {% set sender =
+    service.get_user(chat.sender_id) %}
+    <li>
+      {{ sender.username if sender else chat.sender_id }}: {{ chat.message }}
+      ({{ chat.timestamp }})
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+<input type="text" id="chat-input" placeholder="메시지를 입력하세요." />
+<button id="send-btn">전송</button>
+
+<hr />
+<!-- 송금하기 링크 추가 -->
+<h2>{{ user.username }}님에게 송금하기</h2>
+<p>
+  <a href="{{ url_for('user.transfer_funds_route', user_id=user.id) }}"
+    >송금하러 가기</a
+  >
+</p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script src="{{ url_for('static', filename='user-detail.js') }}"></script>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='user-detail.css') }}"
+/>
+{% else %}
+<p>자신과는 1:1 채팅을 할 수 없습니다.</p>
+{% endif %} {% endblock %}

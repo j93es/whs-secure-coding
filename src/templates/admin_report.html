@@ -1,0 +1,57 @@
+{% extends "admin_base.html" %} {% block title %}관리자 대시보드{% endblock %}
+{% block content %}
+<h1>신고 목록</h1>
+<table border="1" cellspacing="0" cellpadding="5">
+  <tr>
+    <th>신고 ID</th>
+    <th>신고자 ID</th>
+    <th>대상 타입</th>
+    <th>대상 정보</th>
+    <th>신고 사유</th>
+    <th>조치</th>
+  </tr>
+  {% for report in reports %}
+  <tr>
+    <td>{{ report.id }}</td>
+    <td>{{ report.reporter_id }}</td>
+    <td>{{ report.target_type }}</td>
+    <td>
+      {{ report.target_name }} ({{ report.target_id }}) {% if report.target_type
+      == 'user' %} - 상태: {{ report.target_status }} {% endif %}
+    </td>
+    <td>{{ report.reason }}</td>
+    <td>
+      {% if report.target_type == 'product' %}
+      <form
+        action="{{ url_for('admin.report_delete_product', product_id=report.target_id) }}"
+        method="post"
+        style="display: inline"
+      >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+        <button type="submit">삭제</button>
+      </form>
+      {% elif report.target_type == 'user' %} {% if report.target_status ==
+      '휴먼' %}
+      <form
+        action="{{ url_for('admin.report_restore_user', user_id=report.target_id) }}"
+        method="post"
+        style="display: inline"
+      >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+        <button type="submit">복구</button>
+      </form>
+      {% else %}
+      <form
+        action="{{ url_for('admin.report_suspend_user', user_id=report.target_id) }}"
+        method="post"
+        style="display: inline"
+      >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+        <button type="submit">휴먼 전환</button>
+      </form>
+      {% endif %} {% else %} - {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

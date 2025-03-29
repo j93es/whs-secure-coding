@@ -1,0 +1,31 @@
+{% extends "admin_base.html" %} {% block title %}전체 상품 조회{% endblock %} {%
+block content %}
+<h1>전체 상품 목록</h1>
+<table border="1" cellspacing="0" cellpadding="5">
+  <tr>
+    <th>상품 ID</th>
+    <th>제목</th>
+    <th>가격</th>
+    <th>판매자</th>
+    <th>조치</th>
+  </tr>
+  {% for product in products %}
+  <tr>
+    <td>{{ product.id }}</td>
+    <td>{{ product.title }}</td>
+    <td>{{ product.price }}</td>
+    <td>{{ product.seller_id }}</td>
+    <td>
+      <form
+        action="{{ url_for('admin.delete_product', product_id=product.id) }}"
+        method="post"
+        style="display: inline"
+      >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+        <button type="submit">삭제</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

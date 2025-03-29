@@ -1,0 +1,42 @@
+{% extends "admin_base.html" %} {% block title %}전체 사용자 조회{% endblock %}
+{% block content %}
+<h1>전체 사용자 목록</h1>
+<table border="1" cellspacing="0" cellpadding="5">
+  <tr>
+    <th>사용자 ID</th>
+    <th>아이디</th>
+    <th>상태</th>
+    <th>소개</th>
+    <th>조치</th>
+  </tr>
+  {% for user in users %}
+  <tr>
+    <td>{{ user.id }}</td>
+    <td>{{ user.username }}</td>
+    <td>{{ user.status }}</td>
+    <td>{{ user.bio or '-' }}</td>
+    <td>
+      {% if user.status == 'active' %}
+      <form
+        action="{{ url_for('admin.suspend_user', user_id=user.id) }}"
+        method="post"
+        style="display: inline"
+      >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+        <button type="submit">휴먼 전환</button>
+      </form>
+      {% elif user.status == '휴먼' %}
+      <form
+        action="{{ url_for('admin.restore_user', user_id=user.id) }}"
+        method="post"
+        style="display: inline"
+      >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+        <button type="submit">복구</button>
+      </form>
+      {% else %} - {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

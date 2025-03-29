@@ -1,0 +1,41 @@
+{% extends "admin_base.html" %} {% block title %}전체 채팅 관리{% endblock %} {%
+block content %}
+<h1>전체 채팅 메시지 관리</h1>
+
+{% if chats %}
+<table border="1" cellspacing="0" cellpadding="5">
+  <tr>
+    <th>메시지 ID</th>
+    <th>송신자</th>
+    <th>수신자</th>
+    <th>메시지</th>
+    <th>타임스탬프</th>
+    <th>조치</th>
+  </tr>
+  {% for chat in chats %} {% set sender = service.get_user(chat.sender_id) %} {%
+  set recipient = service.get_user(chat.recipient_id) %}
+  <tr>
+    <td>{{ chat.id }}</td>
+    <td>{{ sender.username if sender else chat.sender_id }}</td>
+    <td>
+      {% if chat.recipient_id == 'global' %} 전역 {% else %} {{
+      recipient.username if recipient else chat.recipient_id }} {% endif %}
+    </td>
+    <td>{{ chat.message }}</td>
+    <td>{{ chat.timestamp }}</td>
+    <td>
+      <form
+        action="{{ url_for('admin.delete_chat', chat_id=chat.id) }}"
+        method="post"
+        style="display: inline"
+      >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+        <button type="submit">삭제</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>채팅 메시지가 없습니다.</p>
+{% endif %} {% endblock %}
