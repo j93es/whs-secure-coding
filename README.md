@@ -6,10 +6,11 @@ You should add some functions and complete the security requirements.
 
 ## requirements
 
-if you don't have a miniconda(or anaconda), you can install it on this url. - https://docs.anaconda.com/free/miniconda/index.html
+If you don't have a miniconda(or anaconda), you can install it on this url. - https://docs.anaconda.com/free/miniconda/index.html
 
 ```
-git clone https://github.com/ugonfor/secure-coding
+git clone https://github.com/j93es/whs-assignment.git
+cd ./secure-coding/secure-coding
 conda env create -f enviroments.yaml --name secure-coding
 conda activate secure-coding
 ```
@@ -29,6 +30,15 @@ ADMIN_ID=
 ADMIN_PW=
 ```
 
+### init DB
+
+Run this script to initialize the database.
+
+```sh
+cd ./src
+python app.py
+```
+
 ### deploy.sh
 
 Configure the port to run.
@@ -37,8 +47,7 @@ Configure the port to run.
 #!/bin/bash
 
 PORT=8080
-cd src
-gunicorn -b 127.0.0.1:${PORT} --worker-class eventlet -w 1 app:app
+...
 ```
 
 ### HTTPS, WSS
@@ -52,4 +61,12 @@ run the server process.
 ```
 chmod +x deploy.sh
 ./deploy.sh
+```
+
+### security update
+
+If you want check security update, you can use `pip-audit` command
+
+```sh
+pip-audit
 ```

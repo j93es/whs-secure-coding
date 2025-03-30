@@ -16,3 +16,4 @@ dependencies:
       - Flask-JWT-Extended
       - PyJWT
       - eventlet
+      - pip-audit

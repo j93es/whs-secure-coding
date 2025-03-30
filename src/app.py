@@ -118,4 +118,3 @@ if __name__ == '__main__':
     with app.app_context():
         repository.init_db()
     socketio.run(app, debug=True)
-
