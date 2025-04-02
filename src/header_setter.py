@@ -37,7 +37,7 @@ def register_headers(app):
             "geolocation=(),gyroscope=(),midi=(),microphone=(),magnetometer=(),"
             "payment=(),xr-spatial-tracking=()"
         )
-        response.headers["X-XSS-Protection"] = "0"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
         response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
         response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
         response.headers["Cross-Origin-Embedder-Policy"] = "require-corp"
