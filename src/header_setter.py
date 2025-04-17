@@ -9,7 +9,7 @@ def register_headers(app):
             return response
             
         # 👉 캐시 관련
-        response.headers["Cache-Control"] = "public, max-age=86400"
+        response.headers["Cache-Control"] = "no-cache"
 
         # 👉 Content Security Policy
         csp = [
