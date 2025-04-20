@@ -200,7 +200,7 @@ def new_product():
     return render_template('new_product.html')
 
 @user_bp.route('/product/<product_id>')
-@login_required
+@login_required 
 def view_product(product_id):
     product = service.get_product(product_id)
     if not product:
