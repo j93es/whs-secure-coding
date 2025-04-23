@@ -9,8 +9,8 @@ You should add some functions and complete the security requirements.
 If you don't have a miniconda(or anaconda), you can install it on this url. - https://docs.anaconda.com/free/miniconda/index.html
 
 ```
-git clone https://github.com/j93es/whs-assignment.git
-cd ./secure-coding/secure-coding
+git clone https://github.com/j93es/whs-secure-coding.git
+cd whs-secure-coding
 conda env create -f enviroments.yaml --name secure-coding
 conda activate secure-coding
 ```
