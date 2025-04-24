@@ -24,6 +24,10 @@ app.config['ADMIN_ID'] = os.environ.get('ADMIN_ID')
 app.config['ADMIN_PW'] = os.environ.get('ADMIN_PW')
 csrf = CSRFProtect(app)
 
+limiter.init_app(app)
+register_error_handlers(app)
+register_headers(app)
+
 @app.context_processor
 def inject_csrf_token():
     return dict(csrf_token=generate_csrf())
@@ -112,9 +116,6 @@ def handle_private_message(data):
         emit('private_message', {'username': username, 'message': message}, room=sender_id)
 
 if __name__ == '__main__':
-    limiter.init_app(app)
-    register_error_handlers(app)
-    register_headers(app)
     with app.app_context():
         repository.init_db()
     socketio.run(app, debug=True)

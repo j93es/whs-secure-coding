@@ -93,7 +93,7 @@ def index():
 
 # === 로그인 관련 ===
 @user_bp.route('/register', methods=['GET', 'POST'])
-@limiter.limit("5 per minute")
+@limiter.limit("10 per minute")
 def register():
     if request.method == 'POST':
         username = request.form['username']
@@ -107,7 +107,7 @@ def register():
     return render_template('register.html')
 
 @user_bp.route('/login', methods=['GET', 'POST'])
-@limiter.limit("5 per minute")
+@limiter.limit("10 per minute")
 def login():
     if request.method == 'POST':
         # (원하는 경우 WTForms 등을 사용해 입력 검증 수행)
